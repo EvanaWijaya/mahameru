@@ -46,12 +46,10 @@ fun SplashScreen() {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Background with gradient and image
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
 
-            // Gradasi Background Color
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -73,7 +71,7 @@ fun SplashScreen() {
         }
 
         Image(
-            painter = painterResource(id = R.drawable.status_bar), // Ganti dengan ID resource gambar Anda
+            painter = painterResource(id = R.drawable.status_bar),
             contentDescription = null,
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -84,12 +82,11 @@ fun SplashScreen() {
         Column(
             modifier = Modifier
                 .align(Alignment.Center)
-                .fillMaxSize(), // Adjust top margin
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
 
         ) {
-            // Logo Image
             Image(
                 painter = painterResource(id = R.drawable.logo_app),
                 contentDescription = null,
@@ -122,10 +119,8 @@ fun SplashScreen() {
     }
 }
 
-
-// Tambahkan Preview Annotations di bawah fungsi Composable
 @Preview(showBackground = true, widthDp = 412, heightDp = 917)
 @Composable
 fun SplashScreenPreview() {
-    SplashScreen() // Tampilkan tampilan SplashScreen pada preview
+    SplashScreen()
 }
