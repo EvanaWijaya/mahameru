@@ -10,8 +10,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.myapplication"
-        minSdk = 21
-        targetSdk = 35
+        minSdk = 24
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
     }
@@ -69,4 +69,5 @@ dependencies {
 
     // Dependensi JUnit untuk unit testing
     testImplementation("junit:junit:4.13.2")
+
 }
