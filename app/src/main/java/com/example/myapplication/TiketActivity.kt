@@ -83,7 +83,7 @@ fun TicketScreen() {
             Spacer(modifier = Modifier.height(16.dp))
 
             // Tiket Masuk Section
-            SectionTitle(title = "Tiket Masuk")
+            TicketActivity(title = "Tiket Masuk")
             TicketCard(
                 title = "Tiket Wisata",
                 price = null,
@@ -98,7 +98,7 @@ fun TicketScreen() {
             Spacer(modifier = Modifier.height(16.dp))
 
             // Paket Camping Section
-            SectionTitle(title = "Paket Camping")
+            TicketActivity(title = "Paket Camping")
             CampingOptions()
         }
     }
@@ -138,7 +138,7 @@ fun OperationalInfoCard() {
 }
 
 @Composable
-fun SectionTitle(title: String) {
+fun TicketActivity (title: String) {
     Text(
         text = title,
         fontSize = 20.sp,

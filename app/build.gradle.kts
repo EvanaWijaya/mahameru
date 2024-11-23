@@ -43,6 +43,7 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-pager:0.31.3-beta")
     implementation ("com.google.accompanist:accompanist-pager-indicators:0.30.1")
 
+
     implementation("androidx.compose.runtime:runtime:1.7.5")
     implementation(libs.androidx.junit.ktx)
     implementation(libs.androidx.ui.text)
@@ -68,5 +69,10 @@ dependencies {
 
     // Dependensi JUnit untuk unit testing
     testImplementation("junit:junit:4.13.2")
+
+    //punya herman
+    implementation("androidx.compose.material:material:1.5.3")
+    implementation("androidx.navigation:navigation-compose:2.7.2")
+    implementation ("androidx.compose.material:material-icons-core:1.5.1")
 
 }
