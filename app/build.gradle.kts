@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.myapplication"
-        minSdk = 21
+        minSdk = 24
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -24,7 +24,6 @@ android {
         kotlinCompilerExtensionVersion = "1.5.14"
     }
 
-    // Pengaturan compatibility Java dan Kotlin
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -36,14 +35,13 @@ android {
 }
 
 dependencies {
-    // **Rekomendasi Perubahan**
-    // Dependensi Jetpack Compose - Menggunakan versi langsung untuk menghindari konflik
     implementation("androidx.compose.ui:ui:1.7.5")
     implementation("androidx.compose.material3:material3:1.3.1")
     implementation("androidx.compose.ui:ui-tooling-preview:1.7.5")
     implementation("androidx.activity:activity-compose:1.9.3")
+    implementation ("com.google.accompanist:accompanist-pager:0.31.3-beta")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.30.1")
 
-    // Runtime Compose - Opsional
     implementation("androidx.compose.runtime:runtime:1.7.5")
     implementation(libs.androidx.junit.ktx)
     implementation(libs.androidx.ui.text)
