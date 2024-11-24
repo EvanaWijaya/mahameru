@@ -7,7 +7,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.ContextualFlowColumnOverflow.Companion.Clip
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.myapplication.R
 
-class MainActivity : ComponentActivity() {
+class Panduan : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -42,14 +46,33 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TopAppBar() {
-    // Menggunakan desain custom TopBar Anda
+fun TopAppBar(onBackClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .height(90.dp) // Tinggi top bar
+            .clip(
+                RoundedCornerShape(
+                    bottomStart = 20.dp,
+                    bottomEnd = 20.dp
+                )
+            )
             .background(Color(0xFF00796B)) // Warna latar belakang
-            .padding(40.dp) // Padding luar
     ) {
+        IconButton(
+            onClick = onBackClick,
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .padding(start = 16.dp) // Padding dari sisi kiri
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back",
+                tint = Color.White,
+                modifier = Modifier.size(35.dp)
+            )
+        }
+
         Text(
             text = "Panduan Tempat Wisata",
             fontSize = 20.sp,
@@ -59,6 +82,7 @@ fun TopAppBar() {
         )
     }
 }
+
 
 @Composable
 fun TourismGuideScreen(modifier: Modifier = Modifier) {
@@ -72,7 +96,7 @@ fun TourismGuideScreen(modifier: Modifier = Modifier) {
             shape = RoundedCornerShape(22.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
+                .height(190.dp)
         ) {
             Box {
                 Image(
@@ -121,7 +145,7 @@ fun TourismGuideScreen(modifier: Modifier = Modifier) {
         Text(
             text = "Hal yang menarik dari Agrowisata Tepas Papandayan ini adalah kolam rendam utamanya yang bergaya infinity pool, asap dari kolam menjadikannya panorama yang eksotis, ditambah dengan udara dingin di daerah pegunungan yang menyegarkan. Sebuah gazebo juga tersedia untuk wisatawan bersantai.\n" +
                     "\n" +
-                    "Selain itu, kolam air panas di sana berasal dari sumber alami yang mengandung belerang, dipercaya bermanfaat bagi kesehatan kulit, dan dikelilingi pemandangan Gunung Cikuray.",
+                    "Selain itu, kolam air panas di sana berasal dari sumber alami yang mengandung belerang, dipercaya bermanfaat bagi kesehatan kulit.",
             fontSize = 14.sp,
             textAlign = TextAlign.Justify,
             modifier = Modifier.padding(start = 8.dp)
