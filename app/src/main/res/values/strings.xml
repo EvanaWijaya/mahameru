@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Verdant</string>
+    <string name="subtitle">Jelajah Hijau</string>
+    <string name="logo_description">Logo aplikasi Verdant</string>
+    <string name="title_activity_login_scree">LoginScreen</string>
+    <string name="welcome">Selamat Datang</string>
+    <string name="registerGo">Daftar untuk\nmemulai</string>
+    <string name="createAccount">Buat Akun</string>
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="savePassword">Simpan kata sandi</string>
+    <string name="forgetPassword">Lupa kata sandi</string>
+    <string name="doYouHaveAccount1">Belum Punya Akun? </string>
+    <string name="doYouHaveAccount2">Sudah Punya Akun? </string>
+    <string name="title_activity_welcom">WelcomActivity</string>
 </resources>
