@@ -83,7 +83,7 @@ fun TicketScreen() {
             Spacer(modifier = Modifier.height(16.dp))
 
             // Tiket Masuk Section
-            SectionTitle(title = "Tiket Masuk")
+            CustomSectionTitle(title = "Tiket Masuk")
             TicketCard(
                 title = "Tiket Wisata",
                 price = null,
@@ -98,7 +98,7 @@ fun TicketScreen() {
             Spacer(modifier = Modifier.height(16.dp))
 
             // Paket Camping Section
-            SectionTitle(title = "Paket Camping")
+            CustomSectionTitle(title = "Paket Camping")
             CampingOptions()
         }
     }
@@ -122,7 +122,7 @@ fun OperationalInfoCard() {
                     imageVector = Icons.Default.AccessTime, // Ikon jam
                     contentDescription = "Jam Operasional",
                     tint = Color.White,
-                    modifier = Modifier.size(24.dp) // Ukuran ikon
+                    modifier = Modifier.size(40.dp) // Ukuran ikon
                 )
                 Spacer(modifier = Modifier.width(8.dp)) // Spasi antara ikon dan teks
                 Text("Jam Operasional Tempat Wisata", color = Color.White, fontWeight = FontWeight.Bold)
@@ -138,7 +138,7 @@ fun OperationalInfoCard() {
 }
 
 @Composable
-fun SectionTitle(title: String) {
+fun CustomSectionTitle(title: String) {
     Text(
         text = title,
         fontSize = 20.sp,
