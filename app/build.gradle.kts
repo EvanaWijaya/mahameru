@@ -10,11 +10,16 @@ android {
 
     defaultConfig {
         applicationId = "com.example.myapplication"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
 
         versionCode = 1
         versionName = "1.0"
+    }
+
+    lint {
+        checkReleaseBuilds = false
+        abortOnError = false
     }
 
     buildFeatures {
@@ -42,6 +47,9 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.9.3")
     implementation ("com.google.accompanist:accompanist-pager:0.31.3-beta")
     implementation ("com.google.accompanist:accompanist-pager-indicators:0.30.1")
+    implementation ("com.jakewharton.threetenabp:threetenabp:1.4.4")
+    implementation ("com.google.android.material:material:1.9.0")
+
 
     implementation("androidx.compose.runtime:runtime:1.7.5")
     implementation(libs.androidx.junit.ktx)

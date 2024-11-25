@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <style name="CustomDatePickerTheme" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <!-- Ubah warna utama -->
+        <item name="colorPrimary">#00897B</item>
+        <item name="colorPrimaryDark">#004D40</item>
+        <item name="colorAccent">#FF7F50</item>
+        <!-- Ubah warna background dan teks -->
+        <item name="android:windowBackground">#FFFFFF</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+</resources>

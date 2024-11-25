@@ -24,23 +24,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.myapplication.R
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            MaterialTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    topBar = { TopAppBar() } // Menggunakan TopAppBar Anda di sini
-                ) { innerPadding ->
-                    TourismGuideScreen(modifier = Modifier.padding(innerPadding))
-                }
-            }
-        }
-    }
-}
-
 @Composable
 fun TopAppBar() {
     // Menggunakan desain custom TopBar Anda
