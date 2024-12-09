@@ -2,8 +2,8 @@
 
 package com.example.myapplication
 
+import DetailPengunjungScreen
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -11,54 +11,72 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.google.accompanist.insets.ProvideWindowInsets
 
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
 
-    Scaffold(
-        topBar = {
-            val currentRoute by navController.currentBackStackEntryAsState()
-            val currentDestination = currentRoute?.destination?.route
-            TopBar(title = currentDestination?.capitalize() ?: "Aplikasi")
-        },
-        bottomBar = { BottomNavigationBar(navController) }
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = "beranda",
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable("beranda") { BerandaScreen() }
-            composable("tiket") { TiketScreen() }
-            composable("transaksi") { TransaksiScreen() }
-            composable("profil") { ProfilScreen() }
+    // Use ProvideWindowInsets to manage window insets (status bar, navigation bar)
+    ProvideWindowInsets {
+        Scaffold(
+            bottomBar = {
+                val currentRoute by navController.currentBackStackEntryAsState()
+                val currentDestination = currentRoute?.destination?.route
+
+                // Tampilkan Bottom Navigation Bar kecuali di halaman tertentu
+                if (currentDestination != "ticketBookingScreen" && currentDestination != "riwayatBerhasil") {
+                    BottomNavigationBar(navController)
+                }
+            }
+        ) { innerPadding ->
+            NavHost(
+                navController = navController,
+                startDestination = "beranda",
+                modifier = Modifier
+                    .padding(innerPadding) // Apply padding from window insets
+            ) {
+                composable("beranda") { HomeScreen(navController) }
+                composable(
+                    "guide/{facilityName}",
+                    arguments = listOf(navArgument("facilityName") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val facilityName = backStackEntry.arguments?.getString("facilityName") ?: "Unknown Facility"
+                    TourismGuideScreen(
+                        facilityName = facilityName,
+                        onBackClick = { navController.popBackStack() }
+                    )
+                }
+                composable("tiket") { TicketScreen(navController) }
+                composable("ticketBookingScreen") {
+                    // Halaman TicketBookingScreen tanpa bottom bar
+                    TicketBookingScreen(navController)
+                }
+                composable("transaksi") { TransaksiPembayaranScreen(navController) }
+                composable("riwayatBerhasil") {
+                    RiwayatSuksesScreen(onBackClick = { navController.popBackStack() })
+                }
+                composable("profil") { ProfileScreen() }
+                composable("detailPengunjung") {
+                    DetailPengunjungScreen(navController)
+                }
+            }
         }
     }
 }
 
-@Composable
-fun TopBar(title: String) {
-    TopAppBar(
-        title = { Text(text = title, fontWeight = FontWeight.Bold, color = Color.White) },
-        modifier = Modifier.statusBarsPadding(),
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color(0xFF00BCD4))
-    )
-}
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
@@ -78,13 +96,13 @@ fun BottomNavigationBar(navController: NavHostController) {
                     Icon(
                         painter = painterResource(id = item.icon),
                         contentDescription = item.label,
-                        tint = if (currentDestination == item.route) Color(0xFF00796B) else Color(0xFFCBD5E1) // Ikon aktif dengan warna hijau penuh
+                        tint = if (currentDestination == item.route) Color(0xFF00796B) else Color(0xFFCBD5E1)
                     )
                 },
                 label = {
                     Text(
                         text = item.label,
-                        color = if (currentDestination == item.route) Color(0xFF00796B) else Color(0xFFCBD5E1) // Label aktif dengan warna hijau
+                        color = if (currentDestination == item.route) Color(0xFF00796B) else Color(0xFFCBD5E1)
                     )
                 },
                 selected = currentDestination == item.route,
@@ -98,31 +116,11 @@ fun BottomNavigationBar(navController: NavHostController) {
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = Color.Transparent // Tidak ada latar belakang abu-abu
+                    indicatorColor = Color.Transparent
                 )
             )
         }
     }
-}
-
-@Composable
-fun BerandaScreen() {
-    Text(text = "Beranda", modifier = Modifier.padding(16.dp))
-}
-
-@Composable
-fun TiketScreen() {
-    Text(text = "Tiket", modifier = Modifier.padding(16.dp))
-}
-
-@Composable
-fun TransaksiScreen() {
-    Text(text = "Transaksi", modifier = Modifier.padding(16.dp))
-}
-
-@Composable
-fun ProfilScreen() {
-    Text(text = "Profil", modifier = Modifier.padding(16.dp))
 }
 
 data class BottomNavItem(val label: String, val route: String, val icon: Int)

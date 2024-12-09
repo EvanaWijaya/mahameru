@@ -1,5 +1,7 @@
 package com.example.myapplication
 
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,6 +40,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -51,15 +54,20 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun LoginActivity(navController: NavController) {
+fun LoginScreen(navController: NavController) { // Menggunakan NavController dari luar
+    LoginContent(navController = navController)
+}
 
+@Composable
+fun LoginContent(navController: NavController) {
+    val context = LocalContext.current
     var username = remember { mutableStateOf("") }
     var password = remember { mutableStateOf("") }
     var passwordVisibility = remember { mutableStateOf(false) }
     var isChecked = remember { mutableStateOf(false) }
     var scrollState = rememberScrollState()
 
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
@@ -72,15 +80,15 @@ fun LoginActivity(navController: NavController) {
             shape = RoundedCornerShape(bottomEnd = 50.dp, bottomStart = 50.dp),
             colors = CardDefaults.cardColors(containerColor = Color(0xFF00796B))
         ) {
-            Column (
+            Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
-            ){
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.animasi_login),
                     contentDescription = "Welcome",
-                    modifier = Modifier
-                        .size(280.dp)
+
+                    modifier = Modifier.size(280.dp)
                 )
                 Text(
                     stringResource(id = R.string.welcome),
@@ -90,9 +98,9 @@ fun LoginActivity(navController: NavController) {
                     letterSpacing = 3.sp
                 )
             }
-
         }
-        Column (
+
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp)
@@ -105,7 +113,7 @@ fun LoginActivity(navController: NavController) {
                 fontWeight = FontWeight.ExtraBold,
                 letterSpacing = 3.sp
             )
-            Column (
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 26.dp),
@@ -119,7 +127,7 @@ fun LoginActivity(navController: NavController) {
                             contentDescription = null
                         )
                     },
-                    onValueChange = {username.value = it },
+                    onValueChange = { username.value = it },
                     label = { Text("Nama Pengguna") }
                 )
 
@@ -133,7 +141,7 @@ fun LoginActivity(navController: NavController) {
                             contentDescription = null
                         )
                     },
-                    onValueChange = {password.value = it },
+                    onValueChange = { password.value = it },
                     label = { Text("Kata Sandi") },
                     visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(),
                     trailingIcon = {
@@ -148,18 +156,17 @@ fun LoginActivity(navController: NavController) {
                     }
                 )
 
-                Row (
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
-                ){
-                    Row (
+                ) {
+                    Row(
                         verticalAlignment = Alignment.CenterVertically
-                    ){
+                    ) {
                         Checkbox(
-                            modifier = Modifier,
                             checked = isChecked.value,
                             onCheckedChange = { isChecked.value = it },
                             colors = CheckboxDefaults.colors(checkedColor = Color(0xFF00796B))
@@ -170,18 +177,24 @@ fun LoginActivity(navController: NavController) {
                         )
                     }
                     Text(
-                        stringResource(
-                            id = R.string.forgetPassword),
+                        stringResource(id = R.string.forgetPassword),
                         fontSize = 14.sp,
                         color = Color(0xFF00796B),
                         fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.clickable {  })
+                        modifier = Modifier.clickable { }
+                    )
                 }
+
                 Spacer(Modifier.height(10.dp))
                 Button(
-                    onClick = { /* Aksi tombol masuk */ },
-                    modifier = Modifier
-                        .width(150.dp),
+                    onClick = {
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                        if (context is Activity) {
+                            (context as Activity).finish()
+                        }
+                    },
+                    modifier = Modifier.width(150.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF6400)),
                     elevation = ButtonDefaults.elevatedButtonElevation(
                         defaultElevation = 8.dp,
@@ -190,9 +203,12 @@ fun LoginActivity(navController: NavController) {
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        stringResource(id = R.string.login), color = Color(0xFFFFFFFF),
-                        fontSize = 20.sp)
+                        stringResource(id = R.string.login),
+                        color = Color(0xFFFFFFFF),
+                        fontSize = 20.sp
+                    )
                 }
+
                 Row {
                     Text(
                         stringResource(id = R.string.doYouHaveAccount1),
@@ -204,8 +220,8 @@ fun LoginActivity(navController: NavController) {
                         Modifier
                             .padding(top = 32.dp)
                             .clickable {
-                                navController.navigate("register"){
-                                    popUpTo("welcome") { inclusive = false}
+                                navController.navigate("register") {
+                                    popUpTo("login") { inclusive = false }
                                 }
                             },
                         fontWeight = FontWeight.Bold,
@@ -217,11 +233,10 @@ fun LoginActivity(navController: NavController) {
     }
 }
 
-
 @Preview(showBackground = true, showSystemUi = true, device = Devices.PIXEL_3A)
 @Composable
 private fun LoginScreenPreview() {
     MaterialTheme {
-        LoginActivity(navController = rememberNavController())
+        LoginContent(navController = rememberNavController())
     }
 }

@@ -22,23 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 
-class Riwayat : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            MaterialTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    topBar = { CustomTopAppBar() },
-                    floatingActionButton = { FloatingPencilButton() }
-                ) { innerPadding ->
-                    RiwayatScreen(modifier = Modifier.padding(innerPadding))
-                }
-            }
-        }
-    }
-}
-
 @Composable
 fun CustomTopAppBar(onBackClick: () -> Unit = {}) {
     Box(

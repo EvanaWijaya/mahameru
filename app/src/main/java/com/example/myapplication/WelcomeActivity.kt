@@ -52,7 +52,7 @@ fun WelcomeActivity (navController: NavController) {
 
             Button(
                 onClick = {
-                    navController.navigate("register") // Arahkan ke halaman Login
+                    navController.navigate("register")
                 },
                 modifier = Modifier
                     .padding(bottom = 10.dp)
@@ -73,7 +73,7 @@ fun WelcomeActivity (navController: NavController) {
 
             Button(
                 onClick = {
-                    navController.navigate("login") // Arahkan ke halaman Register
+                    navController.navigate("login")
                 },
                 modifier = Modifier
                     .padding(bottom = 10.dp)

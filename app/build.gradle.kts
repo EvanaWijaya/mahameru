@@ -49,6 +49,7 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-pager-indicators:0.30.1")
     implementation ("com.jakewharton.threetenabp:threetenabp:1.4.4")
     implementation ("com.google.android.material:material:1.9.0")
+    implementation ("com.google.accompanist:accompanist-insets:0.26.4-beta")
 
 
 
@@ -59,6 +60,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.foundation.android)
 
 
     // Untuk dukungan preview di debug mode

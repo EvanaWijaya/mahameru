@@ -38,10 +38,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import java.util.Calendar
 
 @Composable
-fun TicketBookingScreen() {
+fun TicketBookingScreen(navController: NavController) {
     var selectedDate by remember { mutableStateOf("") }
     var adultTickets by remember { mutableStateOf(0) }
     var childTickets by remember { mutableStateOf(0) }
@@ -51,9 +53,8 @@ fun TicketBookingScreen() {
 
     Scaffold(
         topBar = {
-            Column {
+            Column(modifier = Modifier.fillMaxWidth()) {
                 // Progress bar with labels
-                Spacer(modifier = Modifier.height(24.dp))
                 StepIndicator(currentStep = 1, totalSteps = 4, steps = steps)
 
                 // Top App Bar
@@ -62,14 +63,15 @@ fun TicketBookingScreen() {
                     backgroundColor = Color(0xFFFFFFFF),
                     contentColor = Color.Black,
                     navigationIcon = {
-                        IconButton(onClick = { /* Handle back navigation */ }) {
+                        IconButton(onClick = { navController.popBackStack() }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.icon_back),
                                 contentDescription = "Back",
                                 tint = Color.Black
                             )
                         }
-                    }
+                    },
+                    modifier = Modifier.padding(0.dp) // Remove extra padding
                 )
             }
         }
@@ -127,7 +129,7 @@ fun TicketBookingScreen() {
             item {
                 Spacer(modifier = Modifier.height(300.dp))
                 Button(
-                    onClick = { /* Handle continue */ },
+                    onClick = { navController.navigate("detailPengunjung") },
                     enabled = totalCost > 0,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -282,5 +284,5 @@ fun TicketCounter(label: String, price: Int, count: Int, onCountChange: (Int) ->
 @Preview(showBackground = true)
 @Composable
 fun TicketBookingScreenPreview() {
-    TicketBookingScreen()
+    TicketBookingScreen(navController = rememberNavController())
 }

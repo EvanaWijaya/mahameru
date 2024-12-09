@@ -1,26 +1,49 @@
 package com.example.myapplication
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.delay
 
 class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SplashScreen {
-                // Navigasi ke Onboarding atau Main Activity setelah Splash selesai
-                navigateToNextScreen()
-            }
+            MyApp()
         }
     }
+}
 
-    private fun navigateToNextScreen() {
-        val isOnboardingComplete = PreferencesHelper.isOnboardingComplete(this)
-        val nextActivity = if (isOnboardingComplete) MainActivity::class.java else OnboardingActivity::class.java
-        val intent = Intent(this, nextActivity)
-        startActivity(intent)
-        finish()
+@Composable
+fun MyApp() {
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = "splash"
+    ) {
+        composable("splash") {
+            SplashScreen(navController)
+        }
+        composable("onboarding") {
+            OnboardingScreen(navController)
+        }
+        composable("welcome") {
+            WelcomeActivity(navController)
+        }
+        composable("register") {
+            RegisterActivity(navController = navController)
+        }
+        composable("login") {
+            LoginScreen(navController = navController)
+        }
+
     }
 }

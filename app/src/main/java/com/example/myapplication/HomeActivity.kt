@@ -5,6 +5,7 @@ package com.example.myapplication
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -27,7 +29,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -41,47 +42,45 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 val Poppins = FontFamily(Font(R.font.poppins_medium, FontWeight.Medium))
 
 @Composable
-fun HomeScreen() {
-    Scaffold { paddingValues ->
+fun HomeScreen(navController: NavController) {
         // Tambahkan verticalScroll di sini
         Column(
             modifier = Modifier
-                .padding(paddingValues)
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState()) // Menambahkan scrolling
+                .verticalScroll(rememberScrollState())
                 .background(Color(0xFFF6F6F6))
         ) {
             // Custom Top Section
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .height(180.dp)
                     .background(
                         color = Color(0xFF00796B),
-                        shape = RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp) // Lengkungan
+                        shape = RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp)
                     )
+                    .statusBarsPadding()
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(25.dp),
+                        .padding(18.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column(
                         modifier = Modifier
                             .weight(1f)
-                            .padding(5.dp),
+                            .padding(8.dp),
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "Hi Emely Boston!",
                             style = TextStyle(
@@ -144,12 +143,12 @@ fun HomeScreen() {
                 modifier = Modifier.padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                items(4) { index ->
-                    FacilityCard(index)
+                items(
+                    4) { index ->
+                    FacilityCard(index = index, navController = navController)
                 }
             }
         }
-    }
 }
 
 @Composable
@@ -423,12 +422,23 @@ fun TicketItem(title: String, details: String, time: String?) {
 }
 
 @Composable
-fun FacilityCard(index: Int) {
+fun FacilityCard(index: Int, navController: NavController) {
+    val facilityName = when (index) {
+        0 -> "Kolam Rendam Air Panas"
+        1 -> "Camping Ground"
+        2 -> "Kebun Strawberry"
+        else -> "Gazebo"
+    }
+
     Card(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .width(183.dp)
             .height(281.dp)
+            .clickable {
+                // Navigasi ke layar panduan
+                navController.navigate("guide/$facilityName")
+            }
     ) {
         Box( // Gunakan Box untuk menumpuk elemen
             modifier = Modifier.fillMaxSize()
@@ -492,11 +502,4 @@ fun FacilityCard(index: Int) {
             }
         }
     }
-}
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen()
 }
