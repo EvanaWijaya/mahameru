@@ -2,66 +2,112 @@ package com.example.myapplication
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.ui.theme.PanduanWisataTheme
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.ArrowForward
 
 class Ulasan_Activity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            PanduanWisataTheme {
-                PanduanWisataScreen()
-            }
+                UlasanScreen()
         }
     }
 }
 
 @Composable
-fun PanduanWisataScreen() {
+fun UlasanScreen() {
     var selectedTicket by remember { mutableStateOf("Paket Camping Biasa") }
     var showDialog by remember { mutableStateOf(false) }
-    var userRating by remember { mutableStateOf(0) } // Menyimpan nilai rating pengguna
+    var userRating by remember { mutableStateOf(0) }
     var userComment by remember { mutableStateOf("") }
+
+    val backPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                backgroundColor = Color(0xFF01714F),
-                contentColor = Color.White,
-                modifier = Modifier.height(80.dp)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+                    .clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
+                    .background(Color(0xFF00796B)),
+                contentAlignment = Alignment.Center
             ) {
-                Box(
+                Row(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = "Nilai dan Ulasan",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack, // Ubah dari ArrowForward menjadi ArrowBack
+                        contentDescription = "Back",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .padding(start = 16.dp)
+                            .size(24.dp)
+                            .clickable {
+                                backPressedDispatcher?.onBackPressed()
+                            }
                     )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Nilai dan Ulasan",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
+
     ) { padding ->
         Column(
             modifier = Modifier
@@ -87,7 +133,7 @@ fun PanduanWisataScreen() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp)
-                            .background(Color(0xFFFFA500)),
+                            .background(Color(0xFFFF7F50)),
                         contentAlignment = Alignment.CenterStart
                     ) {
                         Text(
@@ -124,7 +170,6 @@ fun PanduanWisataScreen() {
             Spacer(modifier = Modifier.height(32.dp))
 
             // Fitur Rating
-
             RatingBar(
                 rating = userRating,
                 onRatingChanged = { newRating -> userRating = newRating }
@@ -137,27 +182,25 @@ fun PanduanWisataScreen() {
                     .fillMaxWidth()
                     .weight(1f)
                     .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(8.dp))
-                    .padding(8.dp) // Memberikan ruang dalam kotak komentar
+                    .padding(8.dp)
             ) {
                 Column(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    // Tempat untuk menulis komentar
                     TextField(
                         value = userComment,
                         onValueChange = { userComment = it },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f), // Mengambil sisa ruang vertikal dalam kotak
+                            .weight(1f),
                         placeholder = { Text("Pesan dan kesan mu") },
                         colors = TextFieldDefaults.textFieldColors(
-                            backgroundColor = Color.Transparent, // Tanpa latar belakang tambahan
+                            backgroundColor = Color.Transparent,
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent
                         )
                     )
 
-                    // Tombol "Kirim" di pojok kanan bawah
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -168,7 +211,7 @@ fun PanduanWisataScreen() {
                             onClick = { /* Aksi untuk mengirim komentar */ },
                             modifier = Modifier.height(40.dp),
                             colors = ButtonDefaults.buttonColors(
-                                backgroundColor = Color.Transparent, // Latar belakang transparan
+                                backgroundColor = Color.Transparent,
                                 contentColor = Color.White
                             ),
                             elevation = ButtonDefaults.elevation(0.dp)
@@ -179,7 +222,7 @@ fun PanduanWisataScreen() {
                 }
             }
 
-            Box( // space buat icon navigasi
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(80.dp)
@@ -192,7 +235,6 @@ fun PanduanWisataScreen() {
             AlertDialog(
                 onDismissRequest = { showDialog = false },
                 title = {
-                    // Menggunakan Modifier.fillMaxWidth() untuk memastikan judul sejajar dengan konten lain
                     Text(
                         "Pilih Jenis Tiket",
                         modifier = Modifier.fillMaxWidth(),
@@ -211,14 +253,13 @@ fun PanduanWisataScreen() {
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(8.dp), // Memberikan sedikit padding di sekitar tombol
+                                .padding(8.dp),
                             colors = ButtonDefaults.buttonColors(
-                                backgroundColor = Color.White, // Latar belakang putih
-                                contentColor = Color.Black // Teks berwarna hitam
+                                backgroundColor = Color.White,
+                                contentColor = Color.Black
                             )
                         ) {
                             Text("Tiket Masuk", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
-                            // Teks "Tiket Masuk" diatur ke kiri
                         }
 
                         Button(
@@ -228,14 +269,13 @@ fun PanduanWisataScreen() {
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(8.dp), // Memberikan sedikit padding di sekitar tombol
+                                .padding(8.dp),
                             colors = ButtonDefaults.buttonColors(
-                                backgroundColor = Color.White, // Latar belakang putih
-                                contentColor = Color.Black // Teks berwarna hitam
+                                backgroundColor = Color.White,
+                                contentColor = Color.Black
                             )
                         ) {
                             Text("Tiket Paket Camping", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
-                            // Teks "Tiket Paket Camping" diatur ke kiri
                         }
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -255,12 +295,7 @@ fun PanduanWisataScreen() {
                                     contentColor = Color.Black
                                 )
                             ) {
-                                Text(
-                                    "Batal",
-                                    modifier = Modifier.fillMaxWidth(),
-                                    textAlign = TextAlign.Center,
-                                    fontSize = 8.sp
-                                )
+                                Text("Batal", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                             }
 
                             Spacer(modifier = Modifier.width(2.dp))
@@ -272,24 +307,15 @@ fun PanduanWisataScreen() {
                                     .weight(1f),
                                 colors = ButtonDefaults.buttonColors(
                                     backgroundColor = Color.White,
-                                    contentColor = Color.Black,
-
-                                    )
-                            ) {
-                                Text(
-                                    "Simpan", modifier = Modifier.fillMaxWidth(),
-                                    textAlign = TextAlign.Center,
-                                    fontSize = 8.sp,
-                                    color = Color(0xFF01714F)
+                                    contentColor = Color.Black
                                 )
+                            ) {
+                                Text("Simpan", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                             }
                         }
                     }
                 },
-                modifier = Modifier
-                    .clip(RoundedCornerShape(22.dp)
-                    )
-
+                modifier = Modifier.clip(RoundedCornerShape(22.dp))
             )
         }
     }
@@ -311,14 +337,15 @@ fun RatingBar(
                 modifier = Modifier
                     .size(48.dp)
                     .clickable { onRatingChanged(i) },
-                tint = if (i <= rating) Color(0xFFFFD700) else Color.Gray // Warna bintang emas atau abu-abu
+                tint = if (i <= rating) Color(0xFFFF7F50) else Color.Gray
             )
         }
     }
 }
 
-
-
-
-
-
+// Preview function to display PanduanWisataScreen in the preview
+@Preview(showBackground = true)
+@Composable
+fun PreviewPanduanWisataScreen() {
+    UlasanScreen()
+}

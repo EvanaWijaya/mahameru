@@ -21,13 +21,14 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
 @Composable
-fun OnboardingScreen(onFinishOnboarding: () -> Unit) {
+fun OnboardingScreen(navController: NavHostController) {
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
@@ -79,7 +80,9 @@ fun OnboardingScreen(onFinishOnboarding: () -> Unit) {
             Button(
                 onClick = {
                     if (isLastPage) {
-                        onFinishOnboarding()
+                        navController.navigate("welcome"){
+                            popUpTo("onboarding") { inclusive = true }
+                        }
                     } else {
                         scope.launch {
                             pagerState.animateScrollToPage(pagerState.currentPage + 1)

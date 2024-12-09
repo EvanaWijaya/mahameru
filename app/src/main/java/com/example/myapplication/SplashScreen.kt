@@ -24,12 +24,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(onNavigateToOnboarding: () -> Unit) {
+fun SplashScreen(navController: NavHostController) {
     LaunchedEffect(Unit) {
-        kotlinx.coroutines.delay(2000) // Tunggu 2 detik
-        onNavigateToOnboarding()
+        delay(2000) // Delay 2 detik
+        val isOnboardingComplete = false // Replace dengan logika cek Preferences
+        if (isOnboardingComplete) {
+            navController.navigate("login") {
+                popUpTo("splash") { inclusive = true }
+            }
+        } else {
+            navController.navigate("onboarding") {
+                popUpTo("splash") { inclusive = true }
+            }
+        }
     }
 
     Box(

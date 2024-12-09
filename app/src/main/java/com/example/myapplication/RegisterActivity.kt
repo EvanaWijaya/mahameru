@@ -218,7 +218,7 @@ fun RegisterActivity(navController: NavController) {
                             .padding(top = 32.dp)
                             .clickable {
                                 navController.navigate("login") {
-                                    popUpTo("welcome") { inclusive = false}
+                                    popUpTo("register") { inclusive = false}
                                 }
                             },
                         fontWeight = FontWeight.Bold,
