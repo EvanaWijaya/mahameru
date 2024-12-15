@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Verdant</string>
+    <string name="subtitle">Jelajah Hijau</string>
+    <string name="logo_description">Logo aplikasi Verdant</string>
+    <string name="title_activity_login_scree">LoginScreen</string>
+    <string name="welcome">Selamat Datang</string>
+    <string name="registerGo">Daftar untuk\nmemulai</string>
+    <string name="createAccount">Buat Akun</string>
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="savePassword">Simpan kata sandi</string>
+    <string name="forgotPassword">Lupa kata sandi</string>
+    <string name="doYouHaveAccount1">Belum Punya Akun? </string>
+    <string name="doYouHaveAccount2">Sudah Punya Akun? </string>
+    <string name="title_activity_welcom">WelcomActivity</string>
+    <string name="username">Nama Pengguna</string>
+    <string name="password">Kata Sandi</string>
+    <string name="email">Email</string>
+    <string name="confirm_password">Ketik Ulang Kata Sandi</string>
+    <string name="onboarding_welcome_text">Selamat Datang\ndi Tepas\nPapandayan</string>
+    <string name="onboarding_hot_spring_text">Nikmati pemandian\nair panas dengan pemandangan Gunung Cikuray</string>
+    <string name="onboarding_experience_text">Temukan pengalaman bermalam dan berkebun di alam terbuka.</string>
+    <string name="onboarding_button_jelajah">Jelajah</string>
+    <string name="onboarding_button_selanjutnya">Selanjutnya</string>
+    <string name="onboarding_button_mulai">Mulai</string>
+
+</resources>
