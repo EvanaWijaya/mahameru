@@ -21,11 +21,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.ui.screens.Poppins
 import com.example.myapplication.R
+import com.example.myapplication.data.models.ticket.GetTicketHistoryData
+import com.example.myapplication.ui.screens.Poppins
 
 @Composable
-fun TicketSection() {
+fun TicketSection(ticketHistoryList: List<GetTicketHistoryData>) {
     // Container untuk keseluruhan bagian
     Column(
         modifier = Modifier
@@ -63,9 +64,8 @@ fun TicketSection() {
             }
         }
 
-        // Isi Tiket
         Card(
-            shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp) ,
+            shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
             modifier = Modifier.fillMaxWidth()
@@ -73,21 +73,14 @@ fun TicketSection() {
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
-                // Tiket Masuk Dewasa
-                TicketItem(
-                    title = "Tiket Masuk Dewasa",
-                    details = "Fasilitas: Pemandian Air Panas, Kebun Buah",
-                    time = null // Tidak ada waktu untuk tiket ini
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Paket Camping Biasa
-                TicketItem(
-                    title = "Paket Camping Biasa",
-                    details = "Fasilitas: Tenda, Matras, Sleeping Bag, Pemandian Air Panas, Kebun Buah",
-                    time = "00.00.00"
-                )
+                ticketHistoryList.forEach { ticket ->
+                    TicketItem(
+                        title = ticket.name,
+                        details = "Fasilitas: ${ticket.description}",
+                        time = null
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
         }
     }

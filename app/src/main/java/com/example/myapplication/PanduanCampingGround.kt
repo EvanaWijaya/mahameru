@@ -33,7 +33,7 @@ class PanduanCampingGround : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PanduanWisataTheme {
-                UlasanScreen()
+
             }
         }
     }

@@ -33,35 +33,38 @@ class ReportViewModel(
     }
 
 
-    fun createReport(context : Context) {
-        isLoading.value=true
-        val token=SharedPrefs.getToken(context)
+    var isSuccess = mutableStateOf(false)
+
+    fun createReport(context: Context) {
+        isLoading.value = true
+        val token = SharedPrefs.getToken(context)
 
         token?.let {
             viewModelScope.launch(Dispatchers.IO) {
                 postReportRepository.updatePassword(
-                    token=it ,
-                    name=name.value ,
-                    email=email.value ,
-                    about=about.value ,
-                    message=message.value ,
-                    callback={ response , error ->
-                        isLoading.value=false
+                    token = it,
+                    name = name.value,
+                    email = email.value,
+                    about = about.value,
+                    message = message.value,
+                    callback = { response, error ->
+                        isLoading.value = false
                         response?.let {
-                            postReportResponse.value=it
+                            postReportResponse.value = it
+                            isSuccess.value = true
                         }
-                        showToast(context, "Laporan berhasil dikirim")
                         error?.let {
-                            errorMessage.value=it
-                            showToast(context , it)
+                            errorMessage.value = it
+                            showToast(context, it)
                         }
                     }
                 )
             }
         } ?: run {
-            isLoading.value=false
-            errorMessage.value="No token found"
-            showToast(context , "Token tidak ditemukan")
+            isLoading.value = false
+            errorMessage.value = "No token found"
+            showToast(context, "Token tidak ditemukan")
         }
     }
+
 }

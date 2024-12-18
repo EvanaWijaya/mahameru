@@ -70,6 +70,9 @@ class AuthViewModel(
                     if (context is ComponentActivity) {
                         context.finish()
                     }
+
+                    clearForm()
+
                 } else {
                     errorMessage.value = error
                     showToast(context, error ?: "Login failed. Please check your credentials.")
@@ -78,14 +81,18 @@ class AuthViewModel(
         }
     }
 
+    fun clearForm() {
+        username.value = ""
+        password.value = ""
+        confirmPassword.value = ""
+        email.value = ""
+    }
+
     fun register(context: Context, navController: NavController) {
         isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             registerRepository.register(username.value, email.value, password.value) { response, error ->
                 isLoading.value = false
-                username.value = ""
-                email.value = ""
-                password.value = ""
 
                 if (response != null) {
                     registerResponse.value = response
@@ -93,6 +100,7 @@ class AuthViewModel(
                     navController.navigate("login") {
                         popUpTo("register") { inclusive = true }
                     }
+                    clearForm()
                 } else {
                     errorMessage.value = error
                     showToast(context, error ?: "Register failed. Please try again.")

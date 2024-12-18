@@ -20,12 +20,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myapplication.ui.screens.Poppins
 
 @Composable
 fun CustomTopAppBar(
     onBackClick: () -> Unit = {},
     title: String,
-    showBackIcon: Boolean = true // Menambahkan parameter showBackIcon
+    showBackIcon: Boolean = true
 ) {
     Box(
         modifier = Modifier
@@ -39,7 +40,6 @@ fun CustomTopAppBar(
             )
             .background(Color(0xFF00897B))
     ) {
-        // Menampilkan IconButton hanya jika showBackIcon bernilai true
         if (showBackIcon) {
             IconButton(
                 onClick = onBackClick,
@@ -61,7 +61,9 @@ fun CustomTopAppBar(
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center),
+            fontFamily = Poppins
+
         )
     }
 }

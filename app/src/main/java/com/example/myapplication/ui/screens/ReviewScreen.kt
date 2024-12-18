@@ -1,9 +1,5 @@
-package com.example.myapplication
+package com.example.myapplication.ui.screens
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
@@ -29,11 +24,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,70 +35,40 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.myapplication.ui.components.CustomTopAppBar
+import com.example.myapplication.ui.components.ticket.RatingBar
+import com.example.myapplication.view_model.TicketViewModel
 
-class Ulasan_Activity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-                UlasanScreen()
-        }
-    }
-}
 
 @Composable
-fun UlasanScreen() {
-    var selectedTicket by remember { mutableStateOf("Paket Camping Biasa") }
-    var showDialog by remember { mutableStateOf(false) }
-    var userRating by remember { mutableStateOf(0) }
-    var userComment by remember { mutableStateOf("") }
+fun ReviewScreen(ticketViewModel : TicketViewModel, navController : NavController) {
+    val context =   LocalContext.current
 
-    val backPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    var selectedTicket by remember { mutableStateOf("Pilih dulu...") }
+    var showDialog by remember { mutableStateOf(false) }
+
+    val ticketHistory = ticketViewModel.getTicketHistoryResponse.value?.data ?: emptyList()
+    val ticketReview = ticketViewModel.getTicketReviewResponse.value?.data ?: emptyList()
+
+    val filteredTicketHistory = ticketHistory.filter { history ->
+        ticketReview.none { review -> review.transactionTicketId == history.transactionTicketId }
+    }
+    LaunchedEffect(Unit) {
+        ticketViewModel.getHistoryTicket(navController.context)
+    }
 
     Scaffold(
         topBar = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp)
-                    .clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
-                    .background(Color(0xFF00796B)),
-                contentAlignment = Alignment.Center
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack, // Ubah dari ArrowForward menjadi ArrowBack
-                        contentDescription = "Back",
-                        tint = Color.White,
-                        modifier = Modifier
-                            .padding(start = 16.dp)
-                            .size(24.dp)
-                            .clickable {
-                                backPressedDispatcher?.onBackPressed()
-                            }
-                    )
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "Nilai dan Ulasan",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-            }
+            CustomTopAppBar(title = "Nilai dan Ulasan", showBackIcon = true, onBackClick = {
+                navController.popBackStack()
+            })
+
         }
 
     ) { padding ->
@@ -120,7 +83,6 @@ fun UlasanScreen() {
             Text("Beri Nilai dan Ulasan", fontSize = 20.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Komponen kartu untuk memilih jenis tiket
             Card(
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier
@@ -169,10 +131,9 @@ fun UlasanScreen() {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Fitur Rating
             RatingBar(
-                rating = userRating,
-                onRatingChanged = { newRating -> userRating = newRating }
+                rating = ticketViewModel.rating.value,
+                onRatingChanged = { newRating -> ticketViewModel.rating.value = newRating }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -188,8 +149,8 @@ fun UlasanScreen() {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     TextField(
-                        value = userComment,
-                        onValueChange = { userComment = it },
+                        value = ticketViewModel.review.value,
+                        onValueChange = { ticketViewModel.review.value = it },
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f),
@@ -208,7 +169,11 @@ fun UlasanScreen() {
                         contentAlignment = Alignment.BottomEnd
                     ) {
                         Button(
-                            onClick = { /* Aksi untuk mengirim komentar */ },
+                            onClick = { ticketViewModel.putTicketRating(context)
+                                      navController.popBackStack()
+                                ticketViewModel.getHistoryTicket(context)
+                                ticketViewModel.getReview(context)
+                                      },
                             modifier = Modifier.height(40.dp),
                             colors = ButtonDefaults.buttonColors(
                                 backgroundColor = Color.Transparent,
@@ -246,52 +211,40 @@ fun UlasanScreen() {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Divider(color = Color.Black, thickness = 0.5.dp)
-                        Button(
-                            onClick = {
-                                selectedTicket = "Tiket Masuk"
-                                showDialog = false
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                backgroundColor = Color.White,
-                                contentColor = Color.Black
-                            )
-                        ) {
-                            Text("Tiket Masuk", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
-                        }
-
-                        Button(
-                            onClick = {
-                                selectedTicket = "Tiket Paket Camping"
-                                showDialog = false
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                backgroundColor = Color.White,
-                                contentColor = Color.Black
-                            )
-                        ) {
-                            Text("Tiket Paket Camping", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                        filteredTicketHistory.forEach { ticket ->
+                            Button(
+                                onClick = {
+                                    selectedTicket = ticket.name
+                                    ticketViewModel.transactionTicketId.value = ticket.transactionTicketId
+                                    showDialog = false
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = Color.White,
+                                    contentColor = Color.Black
+                                )
+                            ) {
+                                Text(ticket.name, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                            }
                         }
 
                         Spacer(modifier = Modifier.height(8.dp))
 
+                        Spacer(modifier = Modifier.height(8.dp))
+
                         Row(
-                            horizontalArrangement = Arrangement.Start,
+                            horizontalArrangement = Arrangement.End,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Spacer(modifier = Modifier.weight(2f))
                             Button(
                                 onClick = { showDialog = false },
                                 modifier = Modifier
                                     .padding(end = 8.dp)
                                     .weight(0.8f),
                                 colors = ButtonDefaults.buttonColors(
-                                    backgroundColor = Color.White,
+                                    backgroundColor = Color.Transparent,
                                     contentColor = Color.Black
                                 )
                             ) {
@@ -306,8 +259,8 @@ fun UlasanScreen() {
                                     .padding(end = 8.dp)
                                     .weight(1f),
                                 colors = ButtonDefaults.buttonColors(
-                                    backgroundColor = Color.White,
-                                    contentColor = Color.Black
+                                    backgroundColor = Color.Transparent,
+                                    contentColor = Color(0xFF006D60)
                                 )
                             ) {
                                 Text("Simpan", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
@@ -321,31 +274,3 @@ fun UlasanScreen() {
     }
 }
 
-@Composable
-fun RatingBar(
-    rating: Int,
-    onRatingChanged: (Int) -> Unit
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        for (i in 1..5) {
-            Icon(
-                imageVector = if (i <= rating) Icons.Filled.Star else Icons.Filled.StarBorder,
-                contentDescription = "Star",
-                modifier = Modifier
-                    .size(48.dp)
-                    .clickable { onRatingChanged(i) },
-                tint = if (i <= rating) Color(0xFFFF7F50) else Color.Gray
-            )
-        }
-    }
-}
-
-// Preview function to display PanduanWisataScreen in the preview
-@Preview(showBackground = true)
-@Composable
-fun PreviewPanduanWisataScreen() {
-    UlasanScreen()
-}

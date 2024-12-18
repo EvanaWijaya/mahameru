@@ -61,7 +61,9 @@ fun DropdownWithLabel(
             )
             ExposedDropdownMenu(
                 expanded = expanded,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false },
+                containerColor = colorResource(id= R.color.teal_200)
+
             ) {
                 options.forEach { option ->
                     DropdownMenuItem(

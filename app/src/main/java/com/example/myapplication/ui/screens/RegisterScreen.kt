@@ -129,8 +129,9 @@ fun RegisterScreen(navController: NavController, viewModel: AuthViewModel= viewM
 
                         viewModel.register(context,navController)
 
+
                     } ,
-                    label = stringResource(id = R.string.register),
+                    label = if (viewModel.isLoading.value) "Loading..." else stringResource(id = R.string.register),
                     enabled = viewModel.isFormValid.value
                 )
 
@@ -146,6 +147,8 @@ fun RegisterScreen(navController: NavController, viewModel: AuthViewModel= viewM
                             navController.navigate("login") {
                                 popUpTo("register") { inclusive = false }
                             }
+                            viewModel.clearForm()
+
                         }
                     )
                 }

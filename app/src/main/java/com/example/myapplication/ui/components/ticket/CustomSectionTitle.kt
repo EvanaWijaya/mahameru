@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myapplication.ui.screens.Poppins
 
 @Composable
 fun CustomSectionTitle(title: String) {
@@ -14,6 +15,9 @@ fun CustomSectionTitle(title: String) {
         text = title,
         fontSize = 20.sp,
         fontWeight = FontWeight.Bold,
-        modifier = Modifier.padding(vertical = 8.dp)
+        modifier = Modifier.padding(vertical = 8.dp),
+        fontFamily = Poppins
+
+
     )
 }

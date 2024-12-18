@@ -12,13 +12,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
 
 @Composable
 fun ProfilePicture(
     pictureUrl: String,
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
+    size: Dp = 80.dp
 ) {
     val imageBitmap = if (pictureUrl.isNotEmpty() && pictureUrl.startsWith("data:image/")) {
         val base64Image = pictureUrl.replace("data:image/jpeg;base64,", "")
@@ -36,8 +38,8 @@ fun ProfilePicture(
             contentDescription = "Profile Image",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(80.dp)
-                .clip(RoundedCornerShape(40.dp))
+                .size(size)
+                .clip(RoundedCornerShape(size / 2))
                 .let { modifier ->
                     if (onClick != null) modifier.clickable { onClick() }
                     else modifier
@@ -49,8 +51,8 @@ fun ProfilePicture(
             contentDescription = "Profile Image",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(80.dp)
-                .clip(RoundedCornerShape(40.dp))
+                .size(size)
+                .clip(RoundedCornerShape(size / 2))
                 .let { modifier ->
                     if (onClick != null) modifier.clickable { onClick() }
                     else modifier

@@ -38,6 +38,7 @@ import com.example.myapplication.ui.components.CheckboxWithLabel
 import com.example.myapplication.ui.components.ClickableText
 import com.example.myapplication.ui.components.PasswordField
 import com.example.myapplication.ui.components.TextFieldWithIcon
+import com.example.myapplication.utils.showToast
 import com.example.myapplication.view_model.AuthViewModel
 
 @Composable
@@ -98,18 +99,20 @@ fun LoginScreen(navController: NavController?, viewModel: AuthViewModel = viewMo
                     isChecked = isChecked ,
                     onCheckedChange = { isChecked = it } ,
                     label = stringResource(id = R.string.savePassword) ,
-                    onClick = { /* Forgot Password Click Action */ }
+                    onClick = {
+
+                        showToast(context, "Fitur Belum Tersedia")
+
+                    }
                 )
 
                 Spacer(Modifier.height(27.dp))
 
                 ActionButton(
                     onClick = {
-
                         viewModel.login(context)
-
-                    } ,
-                    label = stringResource(id = R.string.login)
+                    },
+                    label = if (viewModel.isLoading.value) "Loading..." else stringResource(id = R.string.login)
                 )
 
                 Row {
@@ -121,9 +124,12 @@ fun LoginScreen(navController: NavController?, viewModel: AuthViewModel = viewMo
                     ClickableText(
                         text = stringResource(id = R.string.register) ,
                         onClick = {
+
                             navController?.navigate("register") {
                                 popUpTo("login") { inclusive = false }
                             }
+                            viewModel.clearForm()
+
                         }
                     )
                 }

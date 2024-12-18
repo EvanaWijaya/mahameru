@@ -23,7 +23,7 @@ fun BottomNavigationBar(navController: NavHostController) {
         val items = listOf(
             BottomNavItem("Beranda", "beranda", R.drawable.icon_home) ,
             BottomNavItem("Tiket", "tiket", R.drawable.icon_tiket) ,
-            BottomNavItem("Transaksi", "transaksi", R.drawable.icon_transaksi) ,
+            BottomNavItem("Transaksi", "transaction", R.drawable.icon_transaksi) ,
             BottomNavItem("Profil", "profil", R.drawable.icon_profile)
         )
         items.forEach { item ->

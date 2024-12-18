@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,20 +15,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.myapplication.R
 import com.example.myapplication.ui.components.ActionButton
+import com.example.myapplication.ui.components.CustomSuccessDialog
 import com.example.myapplication.ui.components.CustomTopAppBar
 import com.example.myapplication.ui.components.DropdownWithLabel
 import com.example.myapplication.ui.components.TextFieldWithLabel
 import com.example.myapplication.view_model.ReportViewModel
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun ProblemReportScreen(
     navController: NavController, viewModel: ReportViewModel
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
+    if (viewModel.isSuccess.value) {
+        CustomSuccessDialog(
+            image = painterResource(id = R.drawable.success_icon),
+            title = "Laporan Berhasil di Kirim",
+            subtitle = "Mohon Menunggu Proses Laporan",
+            onDismiss = { viewModel.isSuccess.value = false }
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -94,7 +107,7 @@ fun ProblemReportScreen(
                     .align(Alignment.CenterHorizontally),
                 onClick = {
                     viewModel.createReport(context)
-                    navController.popBackStack()
+
                 },
                 label = "Kirim"
             )

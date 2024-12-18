@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myapplication.ui.screens.Poppins
 
 @Composable
 fun OperationalInfoCard() {
@@ -40,17 +41,15 @@ fun OperationalInfoCard() {
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Ikon di sebelah kiri
             Icon(
                 imageVector = Icons.Default.AccessTime,
                 contentDescription = "Jam Operasional",
                 tint = Color.White,
                 modifier = Modifier
-                    .size(60.dp) // Ukuran ikon lebih besar
+                    .size(60.dp)
             )
-            Spacer(modifier = Modifier.width(16.dp)) // Spasi antara ikon dan teks
+            Spacer(modifier = Modifier.width(16.dp))
 
-            // Teks di sebelah kanan
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Center
@@ -58,15 +57,20 @@ fun OperationalInfoCard() {
                 Text(
                     text = "Jam Operasional Tempat Wisata",
                     color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    fontWeight = FontWeight.W400,
+                    fontSize = 14.sp,
+                            fontFamily = Poppins
+
                 )
-                Spacer(modifier = Modifier.height(4.dp)) // Jarak kecil antar teks
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "Buka, 08.00-18.00\nCamping, 1 x 24 Jam",
                     color = Color.White,
-                    fontSize = 14.sp,
-                    lineHeight = 20.sp // Jarak antar baris teks
+                    fontSize = 12.sp,
+                    lineHeight = 20.sp,
+                    fontWeight = FontWeight.W300,
+
+                    fontFamily = Poppins
                 )
             }
         }

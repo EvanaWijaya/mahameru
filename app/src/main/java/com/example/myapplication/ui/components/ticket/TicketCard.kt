@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myapplication.ui.screens.Poppins
 
 
 @Composable
@@ -38,23 +39,40 @@ fun TicketCard(
         elevation = CardDefaults.cardElevation(4.dp),
         shape = RoundedCornerShape(20.dp)
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            // Bagian Header (Background Hijau dengan Judul Tiket)
+        Column(modifier = Modifier.fillMaxWidth()
+
+        ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0xFF00897B)) // Warna hijau
+                    .background(Color(0xFF00897B))
                     .padding(vertical = 10.dp, horizontal = 16.dp)
+
             ) {
-                Text(
-                    text = title,
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                Row(
+                    modifier=Modifier.fillMaxWidth() ,
+                    horizontalArrangement=Arrangement.SpaceBetween ,
+                    verticalAlignment=Alignment.CenterVertically
+                ) {
+                    Text(
+                        text=title ,
+                        color=Color.White ,
+                        fontSize=16.sp ,
+                        fontWeight=FontWeight.Bold ,
+                        fontFamily=Poppins
+                    )
+                    if (price != null) {
+                        Text(
+                            text=price ,
+                            color=Color.White ,
+                            fontSize=14.sp ,
+                            fontWeight=FontWeight.SemiBold ,
+                            fontFamily=Poppins
+                        )
+                    }
+                }
             }
 
-            // Bagian Konten
             Column(
                 modifier = Modifier
                     .padding(16.dp)
@@ -62,13 +80,12 @@ fun TicketCard(
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.Top, // Menyelaraskan tombol dan teks di bagian atas
-                    horizontalArrangement = Arrangement.SpaceBetween // Memberi jarak antara teks fitur dan tombol
+                    verticalAlignment = Alignment.Top,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    // Daftar Fitur
                     Column(
-                        modifier = Modifier.weight(1f), // Membuat fitur menyesuaikan ruang yang tersedia
-                        verticalArrangement = Arrangement.spacedBy(8.dp) // Menambahkan jarak antar fitur
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         features.forEach { feature ->
                             Row(
@@ -78,26 +95,31 @@ fun TicketCard(
                                     text = "•",
                                     fontSize = 14.sp,
                                     color = Color.Black,
-                                    modifier = Modifier.padding(end = 8.dp) // Spasi setelah bullet point
+                                    modifier = Modifier.padding(end = 8.dp),
+                                            fontFamily = Poppins
+
                                 )
                                 Text(
                                     text = feature,
                                     fontSize = 14.sp,
-                                    color = Color.Black
+                                    color = Color.Black,
+                                            fontFamily = Poppins
+
+
                                 )
                             }
                         }
                     }
 
-                    // Tombol Pesan
                     Button(
                         onClick = onOrderClick,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7043)), // Warna tombol
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7043)),
                         shape = RoundedCornerShape(16.dp) ,
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp) ,
-                        modifier = Modifier.padding(start = 8.dp) // Memberi jarak tombol dengan fitur
+                        modifier = Modifier.padding(start = 8.dp)
                     ) {
-                        Text("Pesan", color = Color.White, fontSize = 14.sp)
+                        Text("Pesan", color = Color.White, fontSize = 14.sp,                    fontFamily = Poppins
+                        )
                     }
                 }
             }

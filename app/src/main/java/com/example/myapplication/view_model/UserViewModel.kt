@@ -31,7 +31,7 @@ class UserViewModel(
 
     var username = mutableStateOf("")
     var email = mutableStateOf("")
-    private var phoneNumber = mutableStateOf("")
+    var phoneNumber = mutableStateOf("")
     var pictureUrl = mutableStateOf("")
 
     var oldPassword = mutableStateOf("")
